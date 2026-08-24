@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Government Polytechnic </title>
+<style>
+  body{font-family:Arial;margin:0;background:#001f4d}
+  header{background:#2c3e50;color:#fff;padding:20px;text-align:center}
+  nav{background:#001a33;padding:10px;text-align:center}
+  nav a{color:#fff;margin:0 15px;text-decoration:none}
+  nav a:hover{text-decoration:underline}
+  section{padding:20px;background:#fff;margin:20px;border-radius:8px}
+  button{background:#2980b9;color:#fff;border:none;padding:10px 15px;border-radius:5px;cursor:pointer}
+  button:hover{background:#001f4d}
+  select{padding:8px;border-radius:4px}
+ .star{font-size:30px;color:#ccc;cursor:pointer;display:flex;gap:15px}
+ .star span.active{color:#f39c12}
+  table{width:100%;border-collapse:collapse;margin-top:15px}
+  th,td{border:1px solid #ccc;padding:8px;text-align:center}
+  th{background:#2c3e50;color:#fff}
+</style>
+</head>
+<body>
+
+<header style="text-algin:center:">
+  <img src="collage.jpeg" alt="Logo" width="80" style="dispay:block; margin:0 auto;">
+  <h1>Welcome to Government Polytechnic Chitradurga</h1>
+  <p>Department of Technical Education, ESTD-2008</p>
+</header>
+
+<nav>
+  <a href="#about">About</a>
+  <a href="#courses">Courses</a>
+  <a href="#contact">Contact</a>
+  <a href="#feedback">Feedback</a>
+</nav>
+
+<section id="about" style="text-algin:center;">
+  <center><h2>About Our College</h2></center>
+  <img src="collagelogo.jpeg" alt="Our College" style="width:100%; max-width:600px; border-radius:8px; display:block; margin:15px auto;">
+  <center><p>Our college is dedicated to providing quality education and fostering innovation.</p></center>
+</section>
+
+<section id="courses">
+  <h2>Courses Offered</h2>
+  <ul>
+    <li>CS</li>
+    <li>EC</li>
+    <li>CE</li>
+    <li>ME</li>
+  </ul>
+</section>
+
+<section id="contact">
+  <h2>Contact Us</h2>
+  <p>Email: bhargavisrinivasa78@gmail.com</p>
+  <p>Phone: +91 7411358367</p>
+  <button onclick="document.getElementById('m').innerText='Thank you for visiting!'">Welcome Message</button>
+  <p id="m"></p>
+</section>
+
+<section id="feedback">
+  <h2>College Feedback</h2>
+  <select id="d">
+    <option value="CS">CS</option>
+    <option value="EC">EC</option>
+    <option value="CE">CE</option>
+    <option value="ME">ME</option>
+  </select>
+
+
+  <p>Select Star Rating:</p>
+  <div class="star" id="s">
+    <span onclick="R(1)">★</span>
+    <span onclick="R(2)">★</span>
+    <span onclick="R(3)">★</span>
+    <span onclick="R(4)">★</span>
+    <span onclick="R(5)">★</span>
+  </div>
+  <br>
+  <button onclick="F()">Submit Feedback</button>
+  <p id="r"></p>
+
+  <h3>All Department Ratings</h3>
+  <table>
+    <thead>
+      <tr><th>Dept</th><th>Avg</th><th>Votes</th><th>Stars</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>CS</td><td id="a-CS">0</td><td id="c-CS">0</td><td id="s-CS">-</td></tr>
+      <tr><td>EC</td><td id="a-EC">0</td><td id="c-EC">0</td><td id="s-EC">-</td></tr>
+      <tr><td>CE</td><td id="a-CE">0</td><td id="c-CE">0</td><td id="s-CE">-</td></tr>
+      <tr><td>ME</td><td id="a-ME">0</td><td id="c-ME">0</td><td id="s-ME">-</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<script>
+let v = 0;
+let D =JSON.parse(localStorage.getItem("R"))||{CS:[], EC:[], CE:[], ME:[]};
+localStorage.removeItem("R");
+
+function R(n){
+  v = n;
+  document.querySelectorAll("#s span").forEach((e,i)=>e.classList.toggle("active",i<n));
+}
+
+function F(){
+  let k = document.getElementById("d").value;
+  if(!v){ alert("Select stars"); return; }
+  D[k].push(v);
+  localStorage.setItem("R", JSON.stringify(D));
+  document.getElementById("r").innerText = k + " = " + v + "/5";
+  U();
+  v = 0;
+  document.querySelectorAll("#s span").forEach(e=>e.classList.remove("active"));
+}
+
+function U(){
+  for(let k in D){
+    let a = D[k], c = a.length;
+    let av = c? (a.reduce((x,y)=>x+y)/c).toFixed(1) : 0;
+    document.getElementById("a-"+k).innerText = av;
+    document.getElementById("c-"+k).innerText = c;
+    document.getElementById("s-"+k).innerText = c? "★".repeat(Math.round(av))+" "+av+"/5" : "-";
+  }
+}
+   
+U();
+</script>
+
+</body>
+</html>
